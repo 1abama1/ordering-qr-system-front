@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { z } from 'zod';
+import { z } from '../../shared/config/validation';
 import type { MenuItem } from '../../shared/api/contracts';
 import { toTyin } from '../../shared/lib/money';
 export type CartLine = { menuItemId: number; quantity: number };

@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from '../config/validation';
 const id = z.number().int().positive();
 export const menuItemSchema = z.object({
   id,

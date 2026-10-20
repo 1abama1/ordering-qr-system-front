@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { z } from 'zod';
+import { z } from '../config/validation';
 export interface ApiProblem {
   type?: string;
   title?: string;

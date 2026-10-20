@@ -1,5 +1,5 @@
 import { secureUuid } from '../../shared/lib/uuid';
-import { z } from 'zod';
+import { z } from '../../shared/config/validation';
 import {
   createOrderSchema,
   type MenuItem,

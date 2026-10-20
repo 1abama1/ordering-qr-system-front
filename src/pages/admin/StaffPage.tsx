@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMutation } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { z } from '../../shared/config/validation';
 import { Check, UserPlus, UsersRound } from 'lucide-react';
 import { api } from '../../shared/api/client';
 import type { Staff } from '../../shared/api/contracts';

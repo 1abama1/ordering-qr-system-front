@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { z } from 'zod';
+import { z } from '../../shared/config/validation';
 import { Pencil, Plus, Trash2 } from 'lucide-react';
 import { useCatalog } from '../../features/menu/queries';
 import { api } from '../../shared/api/client';

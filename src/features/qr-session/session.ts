@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from '../../shared/config/validation';
 import { api } from '../../shared/api/client';
 import { readStorage, writeStorage } from '../../shared/lib/storage';
 export const QR_KEY = 'restaurant.qr.v1';
