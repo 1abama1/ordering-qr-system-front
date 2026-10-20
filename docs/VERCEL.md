@@ -47,11 +47,23 @@ chmod +x /tmp/ordering-qr-cloudflared
 ## Backend configuration после получения frontend URL
 
 - ALLOWED_ORIGINS: точный https://<проект>.vercel.app либо собственный frontend domain. Для preview добавляйте конкретные разрешённые origin; wildcard не поддерживается backend.
-- Для опубликованного frontend: ALLOWED_ORIGINS=https://menu-qr-system-rho.vercel.app, GUEST_MENU_URL=https://menu-qr-system-rho.vercel.app/menu. При необходимости сохраните другие конкретные разрешённые origins. После изменения env перезапустите backend.
+- Для опубликованного frontend: ALLOWED_ORIGINS=https://menu-qr-system.vercel.app, GUEST_MENU_URL=https://menu-qr-system.vercel.app/menu. При необходимости сохраните другие конкретные разрешённые origins. После изменения env перезапустите backend.
 - GUEST_MENU_URL: https://<frontend-domain>/menu. Получайте QR заново через ADMIN после настройки адреса.
 - Nginx backend должен поддерживать Upgrade на /ws.
 - Backend CORS должен разрешать Authorization, Content-Type, Idempotency-Key и необходимые HTTP methods. Это уже есть в исходном backend, нужно настроить origins.
 - Строки URL с tableToken не должны попадать в access/error logs backend proxy.
+
+## Ngrok и ERR_NGROK_6024
+
+Для backend https://tables-zipfile-galleria.ngrok-free.dev используйте VITE_API_URL=https://tables-zipfile-galleria.ngrok-free.dev и VITE_WS_URL=wss://tables-zipfile-galleria.ngrok-free.dev/ws. Frontend автоматически добавляет ngrok-skip-browser-warning: 1 к REST-запросам на ngrok-free.dev, ngrok-free.app и ngrok.io, включая login и /me. Для других хостов заголовок не добавляется. Это официальный [обход страницы-предупреждения ngrok](https://ngrok.com/docs/pricing-limits/free-plan-limits).
+
+Backend должен включать ngrok-skip-browser-warning в SecurityConfig.config.setAllowedHeaders. Копия точечного изменения: infra/backend-ngrok-cors.patch. Она применяется из корня backend командой git apply <путь-к-frontend>/infra/backend-ngrok-cors.patch, если исходный файл ещё не исправлен. Не применяйте её повторно.
+
+Текущий frontend origin из браузерного лога — https://menu-qr-system.vercel.app. Задайте ALLOWED_ORIGINS=https://menu-qr-system.vercel.app и GUEST_MENU_URL=https://menu-qr-system.vercel.app/menu в окружении backend. Если оба frontend URL нужны одновременно, перечислите оба точных origin через запятую.
+
+После изменения Java-кода пересоберите образ из корня backend: docker compose up -d --build --no-deps backend. Если действующий запуск использует другие compose-файлы, project name или env-file, сохраните те же параметры. Исходники на удалённом сервере также должны содержать исправление. Перезапуск без сборки не включает новый CORS-заголовок в старый образ. Затем Redeploy актуального frontend в Vercel.
+
+OPTIONS /api/staff/auth/me с Origin: https://menu-qr-system.vercel.app и Access-Control-Request-Headers: authorization,ngrok-skip-browser-warning должен вернуть оба разрешённых заголовка и точный Access-Control-Allow-Origin. GET того же endpoint с ngrok-skip-browser-warning: 1 без JWT должен вернуть 401 JSON с тем же CORS origin; это ожидаемый отказ авторизации, подтверждающий обход страницы ngrok.
 
 ## Что делает vercel.json
 

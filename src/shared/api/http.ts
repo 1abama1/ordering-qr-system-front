@@ -2,8 +2,20 @@ import axios from 'axios';
 import { env } from '../config/env';
 import { useAuth } from '../../features/auth/store';
 import { normalizeError } from './errors';
-export const publicHttp = axios.create({ baseURL: env.apiUrl, timeout: 15000 });
-export const staffHttp = axios.create({ baseURL: env.apiUrl, timeout: 15000 });
+const apiHostname = env.apiUrl ? new URL(env.apiUrl).hostname : '';
+const headers = /\.(ngrok-free\.(dev|app)|ngrok\.io)$/.test(apiHostname)
+  ? { 'ngrok-skip-browser-warning': '1' }
+  : undefined;
+export const publicHttp = axios.create({
+  baseURL: env.apiUrl,
+  timeout: 15000,
+  headers,
+});
+export const staffHttp = axios.create({
+  baseURL: env.apiUrl,
+  timeout: 15000,
+  headers,
+});
 staffHttp.interceptors.request.use((config) => {
   const session = useAuth.getState().session;
   if (session && Date.parse(session.expiresAt) > Date.now())

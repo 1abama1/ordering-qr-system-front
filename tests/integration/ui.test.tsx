@@ -41,7 +41,8 @@ it('shows server-validated menu, adds dishes and confirms server order', async (
   );
   history.replaceState({}, '', '/menu?table=3&token=test-only');
   render(<App />);
-  await screen.findByRole('heading', { name: /Наше меню/ });
+  // Cold lazy-route transforms can exceed the default one-second DOM wait.
+  await screen.findByRole('heading', { name: /Наше меню/ }, { timeout: 5000 });
   expect(location.search).not.toContain('token');
   await user.click(screen.getByRole('button', { name: 'Добавить Лагман' }));
   await user.click(
@@ -55,7 +56,7 @@ it('shows server-validated menu, adds dishes and confirms server order', async (
   await screen.findByText('Ваш заказ отправлен в ресторан.');
   expect(screen.getByText('#42')).toBeInTheDocument();
   expect(sessionStorage.getItem('restaurant.pending.v1')).toBeNull();
-});
+}, 10000);
 it('denies an invalid QR and cannot manually select a table', async () => {
   server.use(
     http.get('*/api/tables/resolve', () =>
