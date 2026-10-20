@@ -14,7 +14,13 @@ export function validateDeploymentEnv(env) {
     try {
       const url = new URL(value);
       if (url.protocol !== protocol) issues.push(key + ' must use ' + protocol);
-      if (/^(localhost|127\\..*|\\[::1\\]|0\\.0\\.0\\.0)$/.test(url.hostname))
+      const hostname = url.hostname;
+      if (
+        hostname === 'localhost' ||
+        hostname === '[::1]' ||
+        hostname === '0.0.0.0' ||
+        hostname.startsWith('127.')
+      )
         issues.push(key + ' must point to the public backend.');
       if (url.username || url.password || url.search || url.hash)
         issues.push(
