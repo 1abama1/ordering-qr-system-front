@@ -1,0 +1,11 @@
+# Merge AFTER the backend compose.yml. Run from this frontend directory.
+# Compose paths are resolved relative to the FIRST compose file (the backend).
+services:
+  nginx:
+    image: restaurant-ordering-frontend:local
+    build:
+      context: ../ordering-qr-system-front
+      dockerfile: Dockerfile
+    volumes:
+      - ../ordering-qr-system-front/infra/nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
+      - ../ordering-qr-system-front/infra/nginx/security-headers.conf:/etc/nginx/security-headers.conf:ro

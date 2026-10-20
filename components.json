@@ -1,0 +1,15 @@
+{
+  "style": "new-york",
+  "rsc": false,
+  "tsx": true,
+  "tailwind": {
+    "css": "src/app/styles/index.css",
+    "baseColor": "stone",
+    "cssVariables": true
+  },
+  "aliases": {
+    "components": "src/shared/components",
+    "utils": "src/shared/lib/utils",
+    "ui": "src/shared/components/ui"
+  }
+}
