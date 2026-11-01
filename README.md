@@ -50,10 +50,6 @@ JWT хранится только в памяти. При перезагрузк
 
 Документация: [архитектура](docs/ARCHITECTURE.md), [совместимость backend](docs/BACKEND_COMPATIBILITY.md), [тесты](docs/TESTING.md), [deployment](docs/DEPLOYMENT.md), [результаты проверки](docs/VERIFICATION.md).
 
-## Особенность текущего Windows workspace
-
-Из-за заполненного C: зависимости установлены в D:\CodexWork\restaurant-qr-dependencies и подключены junction node_modules. package.json и lockfile переносимы и не содержат ссылок на D:. На другом компьютере используйте обычный npm ci. Здесь команды Vite/Vitest требуют доступа к кэшу на D:.
-
 ## Ограничения приёмки
 
 Docker/Compose/Nginx и физические устройства требуют отдельной фактической проверки; подготовленные конфиги сами по себе её не заменяют. Производственная задержка доставки не гарантируется. Кухонный snapshot компенсирует пропуски событий REST-обновлением каждые 15 секунд.
